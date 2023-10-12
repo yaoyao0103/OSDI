@@ -2,7 +2,7 @@
 #include "shell.h"
 
 void main(){
-	// set ip serial console
+	// set up serial console
 	uart_init();
 
 	// say hello
