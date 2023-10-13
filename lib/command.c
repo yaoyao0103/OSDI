@@ -1,6 +1,7 @@
 #include "command.h"
 #include "uart.h"
 #include "string.h"
+#include "reboot.h"
 
 void InputBufferOverflowMessage(char cmd[])
 {
@@ -54,10 +55,5 @@ void CommandNotFound(char *s)
 
 void CommandReboot()
 {
-    uart_puts("Start Rebooting...\n");
-
-    *PM_RSTC = PM_PASSWORD | 0x20;
-    *PM_WDOG = PM_PASSWORD | 100;
-
-    while(1);
+    reset(100000);
 }
