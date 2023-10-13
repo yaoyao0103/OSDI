@@ -24,9 +24,9 @@ all:
 kernel8:
 	$(LINKER) -T lib/linker.ld -o $(BUILD_DIR)/kernel8.elf $(OBJ)
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.img
-	$(OD) -D $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/kernel8.objdump
-	$(OD) -x $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/kernel8.xobjdump
-	$(OD) -s $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/kernel8.content
+	$(OD) -D $(BUILD_DIR)/kernel8.elf > $(BUILD_DIR)/kernel8.objdump
+	$(OD) -x $(BUILD_DIR)/kernel8.elf > $(BUILD_DIR)/kernel8.xobjdump
+	$(OD) -s $(BUILD_DIR)/kernel8.elf > $(BUILD_DIR)/kernel8.content
 	rm $(OBJ)
 
 debug:
@@ -49,4 +49,4 @@ gdb:
 
 clean:
 	rm -rf $(BUILD_DIR)
-
+	rm *.o

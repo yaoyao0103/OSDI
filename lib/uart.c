@@ -106,13 +106,3 @@ void uart_puts(char *s) {
         uart_send(*s++);
     }
 }
-
-int strcmp(char* a,char* b){
-	while(*a){
-		if(*a!=*b)return 1;
-		a++;
-		b++;
-	}
-	if(*a!=*b)return 1;
-	return 0;
-}

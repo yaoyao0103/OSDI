@@ -1,6 +1,17 @@
 #include "string.h"
 #include "math.h"
 
+
+int strcmp(char* a,char* b){
+        while(*a){
+                if(*a!=*b)return 1;
+                a++;
+                b++;
+        }
+        if(*a!=*b)return 1;
+        return 0;
+}
+
 int strlen ( char * s )
 {
     int i = 0;
