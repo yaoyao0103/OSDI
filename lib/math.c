@@ -1,3 +1,5 @@
+#include "math.h"
+
 int pow(int base, int exponent)
 {
     int result = 1;
