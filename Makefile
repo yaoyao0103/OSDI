@@ -27,10 +27,10 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm $(OBJS)
 run:
-	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -serial null -serial stdio
+	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -display none -serial null -serial stdio
 
 debug: 
-	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -serial
-	null -serial stdio -S -s
+	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -display none -serial null -serial stdio -S -s
 
-gdb: $(GDB) $(GDBFLAGS)
+gdb:
+	$(GDB) $(GDBFLAGS)
