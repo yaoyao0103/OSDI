@@ -22,7 +22,7 @@ all:
 	make kernel8
 
 kernel8:
-	$(LINKER) -T lib/linker.ld -o $(BUILD_DIR)/kernel8.elf $(OBJ)
+	$(LINKER) -T test/linker.ld -o $(BUILD_DIR)/kernel8.elf $(OBJ)
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.img
 	$(OD) -D $(BUILD_DIR)/kernel8.elf > $(BUILD_DIR)/kernel8.objdump
 	$(OD) -x $(BUILD_DIR)/kernel8.elf > $(BUILD_DIR)/kernel8.xobjdump
@@ -42,8 +42,8 @@ run:
 		-kernel $(BUILD_DIR)/kernel8.img\
 		-display none\
 		-serial null\
-		-serial stdio
-
+		-serial stdio\
+		-initrd initramfs.cpio
 gdb:
 	$(GDB) $(GDBFLAGS)
 
