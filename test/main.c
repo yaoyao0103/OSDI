@@ -45,12 +45,13 @@ void main() {
 	else if(!strcmp(input, "ls")){
 		ls(input, 0);
 	}
+	else if(checkcat(input)){
+		cat(input);
+	}
         else {
-            if(!ls(input, 1)){
 	   	 uart_puts("Error: ");
            	 uart_puts(input);
             	uart_puts(" command not found! Try <help> to check all available commands\n");
-	    }
         }
     }
 }

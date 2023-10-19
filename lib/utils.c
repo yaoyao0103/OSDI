@@ -33,6 +33,15 @@ int strlen ( char * s )
     return i;
 }
 
+void substr(char s[20], char target[20], int start, int len){
+	if(start > len) return 0;
+	int i = 0;
+	for(i = start; i < start+len; i++){
+		target[i-start] = s[i];
+	}
+	target[i] = '\0';
+}
+
 // https://www.geeksforgeeks.org/convert-floating-point-number-string/
 void itoa (int x, char str[], int d) 
 { 
@@ -144,6 +153,77 @@ int ls(char input[20], int readcontent)
         kernel += file_size + name_size ;
     }
 
+}
+
+int checkcat(char *input){
+	char str[4] = "cat";
+	for(int i = 0; i < 3; i++){
+		if(input[i] != str[i]) return 0;
+	}
+	return 1;
+}
+
+void cat(char input[20]){
+    int len = strlen(input);
+    //volatile unsigned char *kernel = (unsigned char *) 0x8000000;
+    volatile unsigned char *kernel = (unsigned char *) 0x20000000;
+    volatile unsigned char *filename;
+    int file_size;
+    int name_size;
+    int file_size_offset    = 6+8+8+8+8+8+8;
+    int name_size_offset    = 6+8+8+8+8+8+8+8+8+8+8+8;
+    char target[20] = {0};
+    substr(input, target, 4, len-4);
+
+
+
+    while(1){ 
+        file_size = 0;
+        name_size = 0;
+        
+        for(int i=0;i<8;i++){
+            if(kernel[file_size_offset + i] >= 'A' && kernel[file_size_offset + i] <= 'F')
+                file_size = file_size * 0x10 + ((int)kernel[file_size_offset + i]) - 'A' + 0xA;            
+            else
+                file_size = file_size * 0x10 + ((int)kernel[file_size_offset + i]) - '0' ;
+
+            if(kernel[name_size_offset + i] >= 'A' && kernel[name_size_offset + i] <= 'F')
+                name_size = name_size * 0x10 + ((int)kernel[name_size_offset + i]) - 'A' + 0xA;
+            else
+                name_size = name_size * 0x10 + ((int)kernel[name_size_offset + i]) - '0' ;         
+        }
+
+	
+	name_size += 0x6E;
+
+        if((file_size % 4) != 0)
+            file_size += (4 - (file_size % 4));
+
+        if((name_size % 4) != 0)
+            name_size += (4 - (name_size % 4));
+
+        filename = (unsigned char *) kernel + 0x6E;
+
+	uart_puts(filename);
+	uart_puts(target);
+	
+	if(!strcmp(kernel + 0x6E, "TRAILER!!!")){
+	    uart_puts("Error: ");
+ 	    uart_puts(target);
+    	    uart_puts(" file not found!\n");		
+	    return;
+	}
+
+	if(!strcmp(kernel + 0x6E, target)){
+            for(int i=0; i<file_size; i++){
+                uart_send(*(kernel + name_size + i));
+                if(!strcmp(*(kernel + name_size + i),'\n')) uart_send('\r');
+            }                
+            return 1;
+        }
+
+        kernel += file_size + name_size ;
+    }
 }
 
 void shell(char *input) {
