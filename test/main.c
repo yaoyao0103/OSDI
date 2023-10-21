@@ -1,6 +1,7 @@
 #include "uart.h"
 #include "reboot.h"
 #include "utils.h"
+#include "mbox.h"
 
 void main() {
     uart_init();    
@@ -17,8 +18,9 @@ void main() {
             uart_puts("hello: print Hello World!\n");
             uart_puts("help: print all available commands\n");
             uart_puts("timestamp: print the time stamp.\n");
+	    uart_puts("info: get the hardware's information\n");
 	    uart_puts("reboot: reboot system\n");
-        }
+	}
 	else if(!strcmp(input, "timestamp")){
 	    unsigned long int cnt_freq, cnt_tpct;
 	    char str[20];
@@ -33,6 +35,19 @@ void main() {
 	    uart_puts("[");
 	    uart_puts(str);
 	    uart_puts("]\n");
+	}
+	else if(!strcmp(input, "info")){
+	    get_board_revision();
+            uart_puts("My board revision is: ");
+            uart_hex(mailbox[5]);
+            uart_puts("\n");
+            get_arm_mem();
+            uart_puts("My ARM memory base address is: ");
+            uart_hex(mailbox[5]);
+            uart_puts("\n");
+            uart_puts("My ARM memory size is: ");
+            uart_hex(mailbox[6]);
+            uart_puts("\n");  
 	}
         else if(!strcmp(input, "reboot")) {
             reset(100000);

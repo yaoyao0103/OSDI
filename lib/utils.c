@@ -165,8 +165,8 @@ int checkcat(char *input){
 
 void cat(char input[20]){
     int len = strlen(input);
-    //volatile unsigned char *kernel = (unsigned char *) 0x8000000;
-    volatile unsigned char *kernel = (unsigned char *) 0x20000000;
+    volatile unsigned char *kernel = (unsigned char *) 0x8000000;
+    //volatile unsigned char *kernel = (unsigned char *) 0x20000000;
     volatile unsigned char *filename;
     int file_size;
     int name_size;
@@ -203,9 +203,6 @@ void cat(char input[20]){
             name_size += (4 - (name_size % 4));
 
         filename = (unsigned char *) kernel + 0x6E;
-
-	uart_puts(filename);
-	uart_puts(target);
 	
 	if(!strcmp(kernel + 0x6E, "TRAILER!!!")){
 	    uart_puts("Error: ");
