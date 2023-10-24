@@ -13,7 +13,7 @@ GDB = aarch-gdb
 GDBFLAGS = -x ./debug.gdb
 
 BUILD_DIR = build
-SRC = $(wildcard test/*.S) $(wildcard test/*.c) $(wildcard lib/*.c)
+SRC = $(wildcard *.S) $(wildcard *.c) $(wildcard ../lib/*.c)
 OBJ = boot.o $(filter-out boot.o, $(wildcard *.o))
 INC = $(wildcard ../lib/)
 
@@ -24,10 +24,10 @@ IMG = $(BOOT).img
 all:
 	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -I$(INC) -c -g $(SRC)
-	make kernel8
+	make bootloader
 
 bootloader:
-	$(LD) $(LDFLAGS) $(BUILD_DIR)/$(ELF) $(OBJ)
+	$(LD) $(LDFLAGS) -o $(BUILD_DIR)/$(ELF) $(OBJ)
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/$(ELF) $(BUILD_DIR)/$(IMG)
 	$(OD) -D $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/$(BOOT).objdump
 	$(OD) -x $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/$(BOOT).xobjdump

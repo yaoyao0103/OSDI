@@ -1,7 +1,8 @@
 #include "uart.h"
 #include "utils.h"
+#include "reboot.h"
 
-void loagimg(){
+void loadimg(){
     uart_puts("Kernel size...\n");
     int kernel_size = 0;
     volatile char input;
@@ -38,7 +39,6 @@ void main(){
                                  |___/                      \n\
     \n";
     uart_puts(helloworld);
-    char input[20];
     while(1) {
         uart_puts("# ");
         char input[20];
@@ -47,8 +47,9 @@ void main(){
 
         if(!strcmp(input, "help")) {
             uart_puts("help: print all available commands\n");
-            uart_puts("reboot: reboot system\n");
-        }
+            uart_puts("loadimg: load kernel image\n");
+	    uart_puts("reboot: reboot system\n");
+	}
         else if(!strcmp(input, "reboot")) {
             reset(100000);
             uart_puts("input c to cancel reset\n");
@@ -58,7 +59,7 @@ void main(){
             }
         }
         else if(!strcmp(input, "loadimg")){
-            loagimg();
+            loadimg();
         }
         else {
 	   	 uart_puts("Error: ");

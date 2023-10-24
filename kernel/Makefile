@@ -13,8 +13,8 @@ GDB = aarch-gdb
 GDBFLAGS = -x ./debug.gdb
 
 BUILD_DIR = build
-SRC = $(wildcard test/*.S) $(wildcard test/*.c) $(wildcard lib/*.c)
-OBJ = boot.o $(filter-out boot.o, $(wildcard *.o))
+SRC = $(wildcard *.S) $(wildcard *.c) $(wildcard ../lib/*.c)
+OBJ = start.o $(filter-out start.o, $(wildcard *.o))
 INC = $(wildcard ../lib/)
 
 BOOT = kernel8
@@ -27,7 +27,7 @@ all:
 	make kernel8
 
 kernel8:
-	$(LD) $(LDFLAGS) $(BUILD_DIR)/$(ELF) $(OBJ)
+	$(LD) $(LDFLAGS) -o $(BUILD_DIR)/$(ELF) $(OBJ)
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/$(ELF) $(BUILD_DIR)/$(IMG)
 	$(OD) -D $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/$(BOOT).objdump
 	$(OD) -x $(BUILD_DIR)/$(ELF) > $(BUILD_DIR)/$(BOOT).xobjdump
