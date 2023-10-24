@@ -18,9 +18,9 @@ void main() {
             uart_puts("hello: print Hello World!\n");
             uart_puts("help: print all available commands\n");
             uart_puts("timestamp: print the time stamp.\n");
-	    uart_puts("info: get the hardware's information\n");
-	    uart_puts("reboot: reboot system\n");
-	}
+            uart_puts("info: get the hardware's information\n");
+            uart_puts("reboot: reboot system\n");
+        }
 	else if(!strcmp(input, "timestamp")){
 	    unsigned long int cnt_freq, cnt_tpct;
 	    char str[20];
