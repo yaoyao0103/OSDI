@@ -37,6 +37,13 @@ _start:
     b       1b
 2:  // cpu id == 0
     
+    // set el2 to el1
+    bl      from_el2_to_el1
+
+    // set exception vector table
+    adr x0, exception_vector_table
+    msr vbar_el1, x0
+
     // set stack before our code
     ldr     x1, =_start
     mov     sp, x1
@@ -54,3 +61,11 @@ _start:
 4:  bl      main
     // for failsafe, halt this core too
     b       1b
+
+from_el2_to_el1:
+    mov     x0,       (1 << 31) // EL1 uses aarch64
+    msr     hcr_el2,  x0
+    mov     x0,       0x3c5     // EL1h (SPSel = 1) with interrupt disabled
+    msr     spsr_el2, x0
+    msr     elr_el2,  lr
+    eret                        // return to EL1
