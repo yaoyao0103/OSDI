@@ -1,6 +1,6 @@
 #include "lib/type.h"
-#include "kernel/peripherals/time.h"
-#include "kernel/peripherals/uart.h"
+#include "time.h"
+#include "uart.h"
 
 #include "exception.h"
 #include "irq.h"

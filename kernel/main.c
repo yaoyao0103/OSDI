@@ -60,6 +60,10 @@ void main() {
 	else if(!strcmp(input, "ls")){
 		ls(input, 0);
 	}
+    else if(!strcmp(input, "exception")){
+        from_el1_to_el0(0x3c0);
+        exception_test();
+    }
 	else if(checkcat(input)){
 		cat(input);
 	}
