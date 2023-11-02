@@ -37,12 +37,14 @@ _start:
     b       1b
 2:  // cpu id == 0
     
+    // set exception vector table
+    adr x0, exception_table_el1
+    msr vbar_el1, x0
+    adr x0, exception_table_el2
+    msr vbar_el2, x0
+
     // set el2 to el1
     bl      from_el2_to_el1
-
-    // set exception vector table
-    adr x0, exception_vector_table
-    msr vbar_el1, x0
 
     // set stack before our code
     ldr     x1, =_start
@@ -75,8 +77,7 @@ from_el1_to_el0:
     msr spsr_el1, x0
     mov x0, sp
     msr sp_el0, x0
-    msr elr_el1, x30
-    bl set_exception_vector_table
+    msr elr_el1, lr
     eret // return to EL0
 
 eret_initramfs:
@@ -86,7 +87,6 @@ eret_initramfs:
     msr sp_el0, x0
     mov x0, 0x60000
     msr elr_el1, x0
-    bl set_exception_vector_table
     eret // return to EL0
 
 core_timer_enable:
